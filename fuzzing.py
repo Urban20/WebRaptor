@@ -10,16 +10,17 @@ import elementos as el
 print(el.logo)
 
 class Url():
-    def __init__(self,url_or):
+    def __init__(self,url_or,timeout):
         #url original
         self.url = url_or
         self.validado = False
         self.head = el.data
         self.leido = False
+        self.timeout = timeout
 
     def validacion(self):
         try:
-            sitio = requests.get(self.url,timeout=5,headers=self.head)
+            sitio = requests.get(self.url,timeout=self.timeout,headers=self.head)
             if sitio.status_code == 200:
                 self.validado = True
             else:
@@ -81,8 +82,12 @@ class Url():
                 else:
                     print(Fore.RED+'no se pudo procesar el diccionario correctamente')
 
+if params.param.timeout != None:
+    timeout = params.param.timeout
+else:
+    timeout = 5
 
-url = Url(params.param.url)
+url = Url(url_or=params.param.url,timeout=timeout)
 url.validacion()
 lista = func.lectura_dic(params.param.dic)
 url.lectura(lista=lista,dic=params.param.dic)
