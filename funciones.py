@@ -10,16 +10,66 @@ init()
 n = 0
 detenido = False
 
+def ayuda():
+    print(Fore.CYAN+ r'''
+          
+{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}
+{}                                                    {}
+{}                                                    {}
+{}      █████╗ ██╗   ██╗██╗   ██╗██████╗  █████╗      {}
+{}     ██╔══██╗╚██╗ ██╔╝██║   ██║██╔══██╗██╔══██╗     {}
+{}     ███████║ ╚████╔╝ ██║   ██║██║  ██║███████║     {}
+{}     ██╔══██║  ╚██╔╝  ██║   ██║██║  ██║██╔══██║     {}
+{}     ██║  ██║   ██║   ╚██████╔╝██████╔╝██║  ██║     {}
+{}     ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═╝     {}
+{}                                                    {}
+{}                                                    {}
+{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}
+          
+    ''')
+    
+          
+    print(Fore.GREEN+'Uso:') 
+    print(Fore.WHITE+'''    
+fuzzing [url] [dic]
+          
+-h o --ayuda para desplegar la ayuda
+
+creado por urb@n para descubrir rutas ocultas en paginas web.
+Consiste en buscar directorios ocultos a partir de un diccionario proporcionado por el usuario con el objetivo de encontrar archivos o vulnerabilidades
+
+parametros obligatorios:
+url                             *url de la web a hacer fuzzing
+          
+dic                             *diccionario en formato .txt que se utiliza para hacer fuzzing, debe estar escrito en formato de listado
+
+--> el parametro dic admite varios diccionarios, para usar esta función se debe pasar el nombre de los diccionarios terminados en .txt y separarlos con "," entre sí          
+''')
+    print(Fore.GREEN+'opciones:')
+    print(Fore.WHITE+'''        
+-h, --ayuda                     *muestra este mensaje
+        
+-g, --guardar, --no-guardar     *argumento opcional para guardar las urls en caso de encontrarse alguna
+        
+-l, --lineal, --no-lineal       *argumento opcional para la busqueda de directorios de forma lineal (consume menos recursos del cpu)
+                                 solo funciona cuando se pasa como parametro un solo diccionario                       
+          
+-t TIMEOUT, --timeout TIMEOUT   *tiempo de tolerancia del script para conectarse a una url
+''')
+
+            
 def lectura_dic(dicc):
     try:
         with open(f'diccionarios/{dicc}','r') as diccionario:
             return str(diccionario.read()).split()
     except FileNotFoundError:
         print(Fore.RED+'diccionario no encontrado')
+
+
 def guardar(diccionario):
     try:
         if el.encontrado: 
-            with open(f'{str(params.param.url).split('/')[2]}-{diccionario.split('.')[0]}.txt','w') as registro:
+            with open(f'{str(params.param.url).split('/')[2]}-{diccionario}.txt','w') as registro:
                 registro.write('''urls encontradas: 
                 ''')
                 for i in el.encontrado:
@@ -31,12 +81,13 @@ def guardar(diccionario):
     except Exception as e:
         print(f'ocurrio un error:{e}')
     
-def progreso():
+
+def progreso(diccionario):
     global n
     global detenido
     #cantidad total de elementos en la lista
     try:
-        lista = func.lectura_dic(params.param.dic)
+        lista = func.lectura_dic(diccionario)
         tamaño_list_i = len(lista)
         tiempo = time()
         while not detenido:
@@ -55,6 +106,7 @@ def progreso():
                 detenido = True
     except Exception as e:
         print(f'ocurrio un error: {e}')
+
 
 def masivo(x):
     global detenido
@@ -79,8 +131,5 @@ def masivo(x):
                         el.encontrado.append(ruta)
         except:
             pass
-        finally:
-            if params.param.guardar:
-                guardar(params.param.dic)
-
+        
 
