@@ -11,8 +11,8 @@ n = 0
 detenido = False
 
 def ayuda():
-    print(Fore.CYAN+ r'''
-          
+    print(Fore.CYAN+ r'''    
+                
 {}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}
 {}                                                    {}
 {}                                                    {}
@@ -55,9 +55,16 @@ dic                             *diccionario en formato .txt que se utiliza para
                                  solo funciona cuando se pasa como parametro un solo diccionario                       
           
 -t TIMEOUT, --timeout TIMEOUT   *tiempo de tolerancia del script para conectarse a una url
+          
+-sd, --subdom                   *busqueda de subdominios en sitios web
+      
 ''')
+    print('''
+#########################################################################################################''')
+    print(Fore.MAGENTA+el.titulo)
 
-            
+
+
 def lectura_dic(dicc):
     try:
         with open(f'diccionarios/{dicc}','r') as diccionario:
@@ -69,7 +76,12 @@ def lectura_dic(dicc):
 def guardar(diccionario):
     try:
         if el.encontrado: 
-            with open(f'{str(params.param.url).split('/')[2]}-{diccionario}.txt','w') as registro:
+            if params.param.subdom:
+                nombre = f'{str(params.param.url).split('/')[2]}-{diccionario}-subdoms.txt'
+            else:
+                nombre = f'{str(params.param.url).split('/')[2]}-{diccionario}.txt'
+
+            with open(nombre,'w') as registro:
                 registro.write('''urls encontradas: 
                 ''')
                 for i in el.encontrado:
@@ -112,23 +124,43 @@ def masivo(x):
     global detenido
     if not detenido:
         try:
-            
-            ruta = f'{params.param.url}{x}'
-            
-            
-            test= requests.get(ruta,timeout=2,headers=el.data)
+            #cuando no hay parametro -sd
+            if not params.param.subdom:
+                ruta = f'{params.param.url}{x}'
+                
+                test= requests.get(ruta,timeout=2,headers=el.data)
 
-            if test.status_code == 200:
-                print(Fore.WHITE+ruta)
-                if params.param.guardar:
-                    with el.lock:   
-                        el.encontrado.append(ruta)
+                if test.status_code == 200:
+                    print(Fore.WHITE+ruta)
+                    if params.param.guardar:
+                        with el.lock:   
+                            el.encontrado.append(ruta)
 
-            elif test.status_code == 401:
-                print(Fore.YELLOW+f'requiere autorizacion:{ruta}')
-                if params.param.guardar:
-                    with el.lock:
-                        el.encontrado.append(ruta)
+                elif test.status_code == 401:
+                    print(Fore.YELLOW+f'requiere autorizacion:{ruta}')
+                    if params.param.guardar:
+                        with el.lock:
+                            el.encontrado.append(ruta)
+            #cuando si lo hay
+            else:
+                try:
+                    
+                    palabra = params.param.url.split('//')[-1].split('.')[0]
+                    url_exp = params.param.url.replace(palabra,x)
+                    test= requests.get(url_exp,headers=el.data)
+                    
+                    if test.status_code == 200:
+                        print(Fore.WHITE+url_exp)
+                    elif test.status_code == 401:
+                        print(Fore.YELLOW+f'requiere autorizacion: {url_exp}')
+
+                    if params.param.guardar:
+                        with el.lock:
+                            el.encontrado.append(url_exp)
+                except:
+                    pass
+
+
         except:
             pass
         
