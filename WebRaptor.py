@@ -7,7 +7,6 @@ import params
 import elementos as el
 
 
-#nota: hacer opciones para encontrar subdominios
 
 class Url():
     def __init__(self,url_or,timeout,lista,dic):
@@ -47,29 +46,23 @@ class Url():
                 for x in self.lista:
                     if not func.detenido:
                         try:
-                            url_exp = self.url.replace(palabra,x)
-                            test= requests.get(url_exp,headers=self.head)
-                            
-                            if test.status_code == 200:
-                                print(Fore.WHITE+url_exp)
-                            elif test.status_code == 401:
-                                print(Fore.YELLOW+f'requiere autorizacion: {url_exp}')
+                            func.subdom_reemplazo(palabra=palabra,reemp=x,head=self.head,url=self.url)
                         except:
                             pass
                         finally:
                             func.n += 1
-                            
+                    else:
+                        break        
             else:
                 print(Fore.GREEN+'buscando subdominios')
                 for x in self.lista:
+                    
                     Thread(target=func.masivo,args=(x,)).start()
                     if is_pressed('esc'):
                         print(Fore.RED+'deteniendo...')
                         func.detenido = True
                         break
-                    if params.param.guardar:
-                        func.guardar(self.nombre_dic)
-
+                    
 
     def lectura(self):
         if self.validado and self.lista != None:
@@ -92,23 +85,9 @@ class Url():
 
                 for x in self.lista:
                     if not func.detenido:
-                        ruta = f'{self.url}{x}'
+                        
                         try:                    
-
-                            test= requests.get(self.url+ x,timeout=5,headers=self.head)
-
-                            if test.status_code == 200:
-                                print(Fore.WHITE+ruta)
-                                    
-                                with self.lock:   
-                                    el.encontrado.append(ruta)
-
-                            elif test.status_code == 401:
-                                print(Fore.YELLOW+f'requiere autorizacion:{x}')
-
-
-                                with self.lock:    
-                                    el.encontrado.append(ruta)
+                            func.rutas(x=x,url=self.url,time=5,head=self.head)
                         except:
                             continue
                 
@@ -133,7 +112,15 @@ class Url():
                 else:
                     print(Fore.RED+'no se pudo procesar el diccionario correctamente')
 
-
+def crear_obj(url_,timeout,lista,dic):
+    
+    url = Url(url_or=url_,timeout=timeout,lista=lista,dic=dic)
+    url.validacion()
+    url.lectura()
+    if params.param.subdom:
+        url.subdom()
+    else:
+        url.rutas()
 
 if params.param.timeout != None:
     timeout = params.param.timeout
@@ -153,20 +140,13 @@ elif params.param.url != None or params.param.dic != None:
             if not params.param.subdom:
                 for x in params.param.dic.split(','):
                     lista = func.lectura_dic(x)
-                    url = Url(url_or=params.param.url,timeout=timeout,lista=lista,dic=x)
-                    url.validacion()
-                    url.lectura()
-                    url.rutas()
-
+                    
+                    crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=x)
         else:
             lista = func.lectura_dic(params.param.dic)
-            url = Url(url_or=params.param.url,timeout=timeout,lista=lista,dic=params.param.dic)
-            url.validacion()
-            url.lectura()
-            if params.param.subdom:
-                url.subdom()
-            else:
-                url.rutas()
+
+            crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=params.param.dic)
+            
 
     except TypeError:
         pass

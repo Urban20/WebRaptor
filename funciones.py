@@ -10,6 +10,40 @@ init()
 n = 0
 detenido = False
 
+
+def rutas(x,url,time,head):
+    ruta = f'{url}{x}'
+                
+    test= requests.get(ruta,timeout=time,headers=head)
+
+    if test.status_code == 200:
+        print(Fore.WHITE+ruta)
+        if params.param.guardar:
+            with el.lock:   
+                el.encontrado.append(ruta)
+
+    elif test.status_code == 401:
+        print(Fore.YELLOW+f'requiere autorizacion:{ruta}')
+        if params.param.guardar:
+            with el.lock:
+                el.encontrado.append(ruta)
+
+
+def subdom_reemplazo(palabra,url,head,reemp):
+    url_exp = url.replace(palabra,reemp)
+    test= requests.get(url_exp,headers=head)
+    
+    if test.status_code == 200:
+        print(Fore.WHITE+url_exp)
+    elif test.status_code == 401:
+        print(Fore.YELLOW+f'requiere autorizacion: {url_exp}')
+
+    if params.param.guardar:
+        with el.lock:
+            el.encontrado.append(url_exp)
+        guardar(params.param.dic)
+
+
 def ayuda():
     print(Fore.CYAN+ r'''    
                 
@@ -31,7 +65,7 @@ def ayuda():
           
     print(Fore.GREEN+'Uso:') 
     print(Fore.WHITE+'''    
-fuzzing [url] [dic]
+wr --url [url] --dic [dic]
           
 -h o --ayuda para desplegar la ayuda
 
@@ -126,37 +160,17 @@ def masivo(x):
         try:
             #cuando no hay parametro -sd
             if not params.param.subdom:
-                ruta = f'{params.param.url}{x}'
-                
-                test= requests.get(ruta,timeout=2,headers=el.data)
 
-                if test.status_code == 200:
-                    print(Fore.WHITE+ruta)
-                    if params.param.guardar:
-                        with el.lock:   
-                            el.encontrado.append(ruta)
+                rutas(x=x,url=params.param.url,time=2,head=el.data)
 
-                elif test.status_code == 401:
-                    print(Fore.YELLOW+f'requiere autorizacion:{ruta}')
-                    if params.param.guardar:
-                        with el.lock:
-                            el.encontrado.append(ruta)
             #cuando si lo hay
             else:
                 try:
                     
                     palabra = params.param.url.split('//')[-1].split('.')[0]
-                    url_exp = params.param.url.replace(palabra,x)
-                    test= requests.get(url_exp,headers=el.data)
                     
-                    if test.status_code == 200:
-                        print(Fore.WHITE+url_exp)
-                    elif test.status_code == 401:
-                        print(Fore.YELLOW+f'requiere autorizacion: {url_exp}')
+                    subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x)
 
-                    if params.param.guardar:
-                        with el.lock:
-                            el.encontrado.append(url_exp)
                 except:
                     pass
 
