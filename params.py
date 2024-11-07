@@ -3,7 +3,7 @@ import argparse
 
 args = argparse.ArgumentParser(
     prog='WebRaptor',
-    usage='''fuzzing [url] [dic]
+    usage='''wr [url] [dic]
     -h o --ayuda para desplegar la ayuda ''',
 
     description= 'creado por urb@n para descubrir rutas ocultas en paginas web',add_help=False
