@@ -48,7 +48,7 @@ class Url():
                 for x in self.lista:
                     if not func.detenido:
                         try:
-                            func.subdom_reemplazo(palabra=palabra,reemp=x,head=self.head,url=self.url)
+                            func.subdom_reemplazo(palabra=palabra,reemp=x,head=self.head,url=self.url,obj_html=self.html)
                         except:
                             pass
                         finally:
@@ -59,7 +59,7 @@ class Url():
                 print(Fore.GREEN+'buscando subdominios')
                 for x in self.lista:
                     
-                    Thread(target=func.masivo,args=(x,)).start()
+                    Thread(target=func.masivo,args=(x,self.html)).start()
                     if is_pressed('esc'):
                         print(Fore.RED+'deteniendo...')
                         func.detenido = True

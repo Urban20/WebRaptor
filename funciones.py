@@ -13,36 +13,30 @@ n = 0
 detenido = False
 
 
-def mostrar_url(msg,ruta):
-    
-    print(msg)
-    if params.param.guardar:
-        with el.lock:   
-            el.encontrado.append(ruta)
+def mostrar_url(msg,url,test,num,obj_html):
+    if test.status_code == num and test.text != obj_html: 
+        
+        print(msg)
+        if params.param.guardar:
+            with el.lock:   
+                el.encontrado.append(url)
 
 def rutas(x,url,time,head,obj_html):
     ruta = f'{url}{x}'
                 
     test= requests.get(ruta,timeout=time,headers=head)
 
-    if test.status_code == 200:
-        if test.text != obj_html:
-      
-           mostrar_url(msg=Fore.WHITE+ruta,ruta=ruta)
+    mostrar_url(msg=Fore.WHITE+ruta,url=ruta,test=test,num=200,obj_html=obj_html)
+        
+    mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{ruta}',url=ruta,test=test,num=401,obj_html=obj_html)
 
-    elif test.status_code == 401:
-        if test.text != obj_html:
-            
-            mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{ruta}',ruta=ruta)
-
-def subdom_reemplazo(palabra,url,head,reemp):
+def subdom_reemplazo(palabra,url,head,reemp,obj_html):
     url_exp = url.replace(palabra,reemp)
     test= requests.get(url_exp,headers=head)
     
-    if test.status_code == 200:
-        print(Fore.WHITE+url_exp)
-    elif test.status_code == 401:
-        print(Fore.YELLOW+f'requiere autorizacion: {url_exp}')
+    mostrar_url(msg=Fore.WHITE+url_exp,url=url_exp,test=test,num=200,obj_html=obj_html)
+
+    mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{url_exp}',url=url_exp,test=test,num=401,obj_html=obj_html)
 
     if params.param.guardar:
         with el.lock:
@@ -175,7 +169,7 @@ def masivo(x,html):
                 
                 palabra = params.param.url.split('//')[-1].split('.')[0]
                 
-                subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x)
+                subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x,obj_html=html)
 
         except:
             pass
