@@ -6,28 +6,34 @@ import requests
 import params
 import funciones as func
 
+
+
 init()
 n = 0
 detenido = False
 
 
-def rutas(x,url,time,head):
+def mostrar_url(msg,ruta):
+    
+    print(msg)
+    if params.param.guardar:
+        with el.lock:   
+            el.encontrado.append(ruta)
+
+def rutas(x,url,time,head,obj_html):
     ruta = f'{url}{x}'
                 
     test= requests.get(ruta,timeout=time,headers=head)
 
     if test.status_code == 200:
-        print(Fore.WHITE+ruta)
-        if params.param.guardar:
-            with el.lock:   
-                el.encontrado.append(ruta)
+        if test.text != obj_html:
+      
+           mostrar_url(msg=Fore.WHITE+ruta,ruta=ruta)
 
     elif test.status_code == 401:
-        print(Fore.YELLOW+f'requiere autorizacion:{ruta}')
-        if params.param.guardar:
-            with el.lock:
-                el.encontrado.append(ruta)
-
+        if test.text != obj_html:
+            
+            mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{ruta}',ruta=ruta)
 
 def subdom_reemplazo(palabra,url,head,reemp):
     url_exp = url.replace(palabra,reemp)
@@ -154,26 +160,22 @@ def progreso(diccionario):
         print(f'ocurrio un error: {e}')
 
 
-def masivo(x):
+def masivo(x,html):
     global detenido
     if not detenido:
         try:
             #cuando no hay parametro -sd
             if not params.param.subdom:
 
-                rutas(x=x,url=params.param.url,time=2,head=el.data)
+                rutas(x=x,url=params.param.url,time=2,head=el.data,obj_html=html)
 
             #cuando si lo hay
             else:
-                try:
-                    
-                    palabra = params.param.url.split('//')[-1].split('.')[0]
-                    
-                    subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x)
-
-                except:
-                    pass
-
+                
+                
+                palabra = params.param.url.split('//')[-1].split('.')[0]
+                
+                subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x)
 
         except:
             pass
