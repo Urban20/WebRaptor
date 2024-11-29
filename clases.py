@@ -5,6 +5,15 @@ import elementos as el
 import funciones as func
 from keyboard import is_pressed
 import params
+from concurrent.futures import ThreadPoolExecutor
+
+#numero de hilos que lleva el scrip
+if params.param.hilos != None:
+    
+    hilo = params.param.hilos
+
+else:
+    hilo = 900
 
 class Url():
     def __init__(self,url_or,timeout,lista,dic):
@@ -36,7 +45,7 @@ class Url():
             self.html = requests.get(self.url).text
 
 
-    def subdom(self):
+    def subdom(self,hilo):
 
         if self.validado and self.leido:
             if params.param.lineal:
@@ -57,13 +66,19 @@ class Url():
                         break        
             else:
                 print(Fore.GREEN+'buscando subdominios')
-                for x in self.lista:
+                
+                print(f'utilizando {hilo} hilos')
+
+                with ThreadPoolExecutor(max_workers=hilo) as ejec:
                     
-                    Thread(target=func.masivo,args=(x,self.html)).start()
-                    if is_pressed('esc'):
-                        print(Fore.RED+'deteniendo...')
-                        func.detenido = True
-                        break
+                    for x in self.lista:
+                        
+                        ejec.submit(func.masivo,x,self.html)
+
+                        if is_pressed('esc'):
+                            print(Fore.RED+'deteniendo...')
+                            func.detenido = True
+                            break
                     
 
     def lectura(self):
@@ -101,15 +116,17 @@ class Url():
             else:
                 if self.lista != None:
                     print(Fore.GREEN+'buscando rutas')
-                    for x in self.lista:
-                        
-                        Thread(target=func.masivo,args=(x,self.html)).start()
-                        if is_pressed('esc'):
-                            print(Fore.RED+'deteniendo...')
-                            func.detenido = True
-                            break
-                        if params.param.guardar:
-                            func.guardar(diccionario=self.nombre_dic.split('.')[0])
+                    print(f'utilizando {hilo} hilos')
+                    with ThreadPoolExecutor(max_workers=hilo) as ejec:
+                        for x in self.lista:
+                    
+                            ejec.submit(func.masivo,x,self.html)
+                            if is_pressed('esc'):
+                                print(Fore.RED+'deteniendo...')
+                                func.detenido = True
+                                break
+                            if params.param.guardar:
+                                func.guardar(diccionario=self.nombre_dic.split('.')[0])
 
                 else:
                     print(Fore.RED+'no se pudo procesar el diccionario correctamente')
@@ -122,7 +139,7 @@ def crear_obj(url_,timeout,lista,dic):
     url.obtener_html()
     url.lectura()
     if params.param.subdom:
-        url.subdom()
+        url.subdom(hilo=hilo)
     else:
         url.rutas()
     
