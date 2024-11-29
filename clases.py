@@ -3,7 +3,6 @@ from colorama import Fore
 import requests
 import elementos as el
 import funciones as func
-from keyboard import is_pressed
 import params
 from concurrent.futures import ThreadPoolExecutor
 
@@ -75,10 +74,7 @@ class Url():
                         
                         ejec.submit(func.masivo,x,self.html)
 
-                        if is_pressed('esc'):
-                            print(Fore.RED+'deteniendo...')
-                            func.detenido = True
-                            break
+                        
                     
 
     def lectura(self):
@@ -121,10 +117,7 @@ class Url():
                         for x in self.lista:
                     
                             ejec.submit(func.masivo,x,self.html)
-                            if is_pressed('esc'):
-                                print(Fore.RED+'deteniendo...')
-                                func.detenido = True
-                                break
+                            
                             if params.param.guardar:
                                 func.guardar(diccionario=self.nombre_dic.split('.')[0])
 

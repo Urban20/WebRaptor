@@ -1,5 +1,4 @@
 from time import time
-from keyboard import is_pressed
 import elementos as el
 from colorama import init, Fore
 import requests
@@ -140,9 +139,6 @@ def progreso(diccionario):
         
             val_prog = (n/tamaño_list_i) * 100
             porcentaje =f'{str(val_prog)[:5]}%'
-            if is_pressed('esc'):
-                print(Fore.RED+'detenido')
-                detenido = True
                 
             if time() - tiempo > 1:
                 print(Fore.CYAN+f'progreso: {porcentaje}')
