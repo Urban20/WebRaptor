@@ -18,13 +18,14 @@ try:
         print(el.logo)
 
         try:
+            # cuando tenes muchos diccionarios con los que probar
             if ',' in params.param.dic:
-                # aca iria la funcion para poner varios dicionarios para subdom tambien (cosa a hacer en el futuro)
-                if not params.param.subdom:
-                    for x in params.param.dic.split(','):
-                        lista = func.lectura_dic(x)
-                        
-                        clases.crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=x)
+              
+                
+                for x in params.param.dic.split(','):
+                    lista = func.lectura_dic(x)
+                    
+                    clases.crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=x)
             else:
                 lista = func.lectura_dic(params.param.dic)
 
