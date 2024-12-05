@@ -5,6 +5,11 @@ import elementos as el
 import funciones as func
 import params
 from concurrent.futures import ThreadPoolExecutor
+from keyboard import is_pressed
+
+def detencion():
+    print(Fore.RED+'deteniendo...')
+    func.detenido = True
 
 #numero de hilos que lleva el scrip
 if params.param.hilos != None:
@@ -47,36 +52,22 @@ class Url():
     def subdom(self,hilo):
 
         if self.validado and self.leido:
-            if params.param.lineal:
-                print(Fore.GREEN+'buscando subdominios: metodo lineal (baja carga)')
-            #detectar palabra a cambiar
-                Thread(target=func.progreso,args=(self.nombre_dic,)).start()
+           
+            print(Fore.GREEN+'buscando subdominios')
+            
+            print(f'utilizando {hilo} hilos')
 
-                palabra = self.url.split('//')[-1].split('.')[0]
-                for x in self.lista:
-                    if not func.detenido:
-                        try:
-                            func.subdom_reemplazo(palabra=palabra,reemp=x,head=self.head,url=self.url,obj_html=self.html)
-                        except:
-                            pass
-                        finally:
-                            func.n += 1
-                    else:
-                        break        
-            else:
-                print(Fore.GREEN+'buscando subdominios')
+            with ThreadPoolExecutor(max_workers=hilo) as ejec:
                 
-                print(f'utilizando {hilo} hilos')
+                for x in self.lista:
+                    #deteniendo ejecucion----------
+                    if is_pressed('esc'):
+                        detencion()
+                        break
+                    #deteniendo ejecucion----------
+                    ejec.submit(func.masivo,x,self.html)
 
-                with ThreadPoolExecutor(max_workers=hilo) as ejec:
-                    
-                    for x in self.lista:
                         
-                        ejec.submit(func.masivo,x,self.html)
-
-                        
-                    
-
     def lectura(self):
         if self.validado and self.lista != None:
             
@@ -90,39 +81,26 @@ class Url():
     def rutas(self):
         #se ejecuta la busqueda de rutas
         if self.leido and self.validado:
-
-            #ejecucion lineal----------------------------
-            if params.param.lineal and self.lista != None and not ',' in self.nombre_dic:
-                print(Fore.GREEN+'buscando rutas: metodo lineal (baja carga)')
-                Thread(target=func.progreso,args=(self.nombre_dic,)).start()
-
-                for x in self.lista:
-                    if not func.detenido:
-                        
-                        try:                    
-                            func.rutas(x=x,url=self.url,time=5,head=self.head,obj_html=self.html)
-                        except:
-                            continue
-                
-                        finally:
-                            func.n += 1
-                            if params.param.guardar:
-                                func.guardar(diccionario=self.nombre_dic)
+            
             #ejecucion masiva----------------------------
-            else:
-                if self.lista != None:
-                    print(Fore.GREEN+'buscando rutas')
-                    print(f'utilizando {hilo} hilos')
-                    with ThreadPoolExecutor(max_workers=hilo) as ejec:
-                        for x in self.lista:
-                    
-                            ejec.submit(func.masivo,x,self.html)
-                            
-                            if params.param.guardar:
-                                func.guardar(diccionario=self.nombre_dic.split('.')[0])
+            
+            if self.lista != None:
+                print(Fore.GREEN+'buscando rutas')
+                print(f'utilizando {hilo} hilos')
+                with ThreadPoolExecutor(max_workers=hilo) as ejec:
+                    for x in self.lista:
+                        #deteniendo ejecucion----------
+                        if is_pressed('esc'):
+                            detencion()
+                            break
+                        #deteniendo ejecucion----------
+                        ejec.submit(func.masivo,x,self.html)
+                        
+                        if params.param.guardar:
+                            func.guardar(diccionario=self.nombre_dic.split('.')[0])
 
-                else:
-                    print(Fore.RED+'no se pudo procesar el diccionario correctamente')
+            else:
+                print(Fore.RED+'no se pudo procesar el diccionario correctamente')
 
 
 def crear_obj(url_,timeout,lista,dic):

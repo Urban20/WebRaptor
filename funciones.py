@@ -42,7 +42,6 @@ def subdom_reemplazo(palabra,url,head,reemp,obj_html):
             el.encontrado.append(url_exp)
         guardar(params.param.dic)
 
-
 def ayuda():
     print(Fore.CYAN+ r'''    
                 
@@ -83,10 +82,7 @@ dic                             *diccionario en formato .txt que se utiliza para
 -h, --ayuda                     *muestra este mensaje
         
 -g, --guardar, --no-guardar     *argumento opcional para guardar las urls en caso de encontrarse alguna
-        
--l, --lineal, --no-lineal       *argumento opcional para la busqueda de directorios de forma lineal (consume menos recursos del cpu)
-                                 solo funciona cuando se pasa como parametro un solo diccionario                       
-          
+                                  
 -t TIMEOUT, --timeout TIMEOUT   *tiempo de tolerancia del script para conectarse a una url
           
 -sd, --subdom                   *busqueda de subdominios en sitios web
@@ -96,15 +92,12 @@ dic                             *diccionario en formato .txt que se utiliza para
 #########################################################################################################''')
     print(Fore.MAGENTA+el.titulo)
 
-
-
 def lectura_dic(dicc):
     try:
         with open(f'diccionarios/{dicc}','r') as diccionario:
             return str(diccionario.read()).split()
     except FileNotFoundError:
         print(Fore.RED+'diccionario no encontrado')
-
 
 def guardar(diccionario):
     try:
@@ -126,7 +119,6 @@ def guardar(diccionario):
     except Exception as e:
         print(f'ocurrio un error:{e}')
     
-
 def progreso(diccionario):
     global n
     global detenido
@@ -149,7 +141,6 @@ def progreso(diccionario):
     except Exception as e:
         print(f'ocurrio un error: {e}')
 
-
 def masivo(x,html):
     global detenido
     if not detenido:
@@ -169,5 +160,7 @@ def masivo(x,html):
 
         except:
             pass
+    else:
+        exit()
         
 
