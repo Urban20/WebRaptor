@@ -7,17 +7,15 @@ import params
 from concurrent.futures import ThreadPoolExecutor
 from keyboard import is_pressed
 
+if params.param.hilos == None:
+    hilo = 200
+else:hilo = params.param.hilos
+
+
 def detencion():
     print(Fore.RED+'deteniendo...')
     func.detenido = True
 
-#numero de hilos que lleva el scrip
-if params.param.hilos != None:
-    
-    hilo = params.param.hilos
-
-else:
-    hilo = 900
 
 class Url():
     def __init__(self,url_or,timeout,lista,dic):
@@ -96,8 +94,7 @@ class Url():
                         #deteniendo ejecucion----------
                         ejec.submit(func.masivo,x,self.html)
                         
-                        if params.param.guardar:
-                            func.guardar(diccionario=self.nombre_dic.split('.')[0])
+                        
 
             else:
                 print(Fore.RED+'no se pudo procesar el diccionario correctamente')

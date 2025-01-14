@@ -16,9 +16,10 @@ def mostrar_url(msg,url,test,num,obj_html):
     if test.status_code == num and test.text != obj_html: 
         
         print(msg)
-        if params.param.guardar:
+        if params.param.guardar :
             with el.lock:   
                 el.encontrado.append(url)
+                guardar(params.param.dic)
 
 def rutas(x,url,time,head,obj_html):
     ruta = f'{url}{x}'
@@ -36,11 +37,6 @@ def subdom_reemplazo(palabra,url,head,reemp,obj_html):
     mostrar_url(msg=Fore.WHITE+url_exp,url=url_exp,test=test,num=200,obj_html=obj_html)
 
     mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{url_exp}',url=url_exp,test=test,num=401,obj_html=obj_html)
-
-    if params.param.guardar:
-        with el.lock:
-            el.encontrado.append(url_exp)
-        guardar(params.param.dic)
 
 def ayuda():
     print(Fore.CYAN+ r'''    

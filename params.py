@@ -16,5 +16,5 @@ args.add_argument('-g','--guardar',help='argumento opcional para guardar las url
 args.add_argument('-t','--timeout',type=int,help='tiempo de tolerancia del script para conectarse a una url')
 args.add_argument('-h','--ayuda',type=int,help='ayuda',action=argparse.BooleanOptionalAction)
 args.add_argument('-sd','--subdom',help='parametro para buscar subdominios',action=argparse.BooleanOptionalAction)
-args.add_argument('-hl','--hilos',type=int)
+args.add_argument('-hl','--hilos',help='hilos',type=int)
 param= args.parse_args()

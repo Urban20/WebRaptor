@@ -5,6 +5,10 @@ import clases
 from colorama import Fore
 
 try:
+
+
+    print(el.logo)
+
     if params.param.timeout != None:
         timeout = params.param.timeout
     else:
@@ -12,10 +16,10 @@ try:
 
     if params.param.ayuda:
         func.ayuda()
-
+    
     elif params.param.url != None or params.param.dic != None:
 
-        print(el.logo)
+        
 
         try:
             # cuando tenes muchos diccionarios con los que probar
