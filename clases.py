@@ -1,11 +1,12 @@
-from threading import Lock,Thread
+from threading import Lock
 from colorama import Fore
 import requests
 import elementos as el
 import funciones as func
 import params
 from concurrent.futures import ThreadPoolExecutor
-from keyboard import is_pressed
+
+
 
 def detencion():
     print(Fore.RED+'deteniendo...')
@@ -17,7 +18,7 @@ if params.param.hilos != None:
     hilo = params.param.hilos
 
 else:
-    hilo = 900
+    hilo = 16
 
 class Url():
     def __init__(self,url_or,timeout,lista,dic):
@@ -38,7 +39,7 @@ class Url():
                 self.validado = True
             else:
                 print(Fore.RED+f'el sitio no responde, codigo de estatus:{sitio.status_code}')
-                print(el.status[sitio.status_code])
+                print(func.cargar_json('status.json').get(str(sitio.status_code)))
         except TimeoutError:
              print(Fore.RED+'tiempo de espera agotado')
         except Exception as e:
@@ -60,11 +61,7 @@ class Url():
             with ThreadPoolExecutor(max_workers=hilo) as ejec:
                 
                 for x in self.lista:
-                    #deteniendo ejecucion----------
-                    if is_pressed('esc'):
-                        detencion()
-                        break
-                    #deteniendo ejecucion----------
+                    
                     ejec.submit(func.masivo,x,self.html)
 
                         
@@ -89,11 +86,7 @@ class Url():
                 print(f'utilizando {hilo} hilos')
                 with ThreadPoolExecutor(max_workers=hilo) as ejec:
                     for x in self.lista:
-                        #deteniendo ejecucion----------
-                        if is_pressed('esc'):
-                            detencion()
-                            break
-                        #deteniendo ejecucion----------
+                       
                         ejec.submit(func.masivo,x,self.html)
                         
                         if params.param.guardar:

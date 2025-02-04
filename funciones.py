@@ -4,13 +4,16 @@ from colorama import init, Fore
 import requests
 import params
 import funciones as func
-
+import json
 
 
 init()
 n = 0
 detenido = False
 
+def cargar_json(json_arch):
+    with open(json_arch) as a:
+        return json.load(a)
 
 def mostrar_url(msg,url,test,num,obj_html):
     if test.status_code == num and test.text != obj_html: 
