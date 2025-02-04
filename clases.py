@@ -89,8 +89,7 @@ class Url():
                        
                         ejec.submit(func.masivo,x,self.html)
                         
-                        if params.param.guardar:
-                            func.guardar(diccionario=self.nombre_dic.split('.')[0])
+                        
 
             else:
                 print(Fore.RED+'no se pudo procesar el diccionario correctamente')
