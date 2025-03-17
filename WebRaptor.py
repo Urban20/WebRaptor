@@ -3,11 +3,15 @@ import params
 import elementos as el
 import clases
 from colorama import Fore
+import signal
+
 
 try:
 
 
     print(el.logo)
+
+    signal.signal(signalnum=signal.SIGINT,handler=func.salir)
 
     if params.param.timeout != None:
         timeout = params.param.timeout
@@ -41,4 +45,4 @@ try:
 except KeyboardInterrupt:
     print(Fore.RED+'interrumpiendo script')
     func.detenido = True
-    exit()
+    exit(0)

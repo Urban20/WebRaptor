@@ -11,6 +11,12 @@ init()
 n = 0
 detenido = False
 
+def salir(señal,frame):
+    global detenido
+    print(Fore.WHITE+'\n[+] saliendo...\n')
+    detenido = True
+    exit(0)
+
 def cargar_json(json_arch):
     with open(json_arch) as a:
         return json.load(a)

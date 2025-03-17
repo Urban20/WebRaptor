@@ -35,15 +35,14 @@ class Url():
     def validacion(self):
         try:
             sitio = requests.get(self.url,timeout=self.timeout,headers=self.head)
-            if sitio.status_code == 200:
-                self.validado = True
-            else:
-                print(Fore.RED+f'el sitio no responde, codigo de estatus:{sitio.status_code}')
-                print(func.cargar_json('status.json').get(str(sitio.status_code)))
+            self.validado = True
+            
         except TimeoutError:
              print(Fore.RED+'tiempo de espera agotado')
+             exit(1)
         except Exception as e:
             print(Fore.RED+f'error: {e}')
+            exit(1)
 
     def obtener_html(self):
         if self.validado:
