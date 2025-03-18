@@ -6,6 +6,10 @@ from colorama import Fore
 import signal
 
 
+# autor : Urban
+# aclaracion importante: el codigo esta un poco desorganizado con variables que pueden ser confusas, codigo redundante , tambien puede haber metodos y funciones que se llaman igual
+# el codigo es algo viejo, pero funciona y se intenta pulir y mejorar en la medida de lo posible
+
 try:
 
 
@@ -26,18 +30,12 @@ try:
         
 
         try:
-            # cuando tenes muchos diccionarios con los que probar
-            if ',' in params.param.dic:
-              
+            
+            for x in params.param.dic.split(','):
+                lista = func.lectura_dic(x)
                 
-                for x in params.param.dic.split(','):
-                    lista = func.lectura_dic(x)
-                    
-                    clases.crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=x)
-            else:
-                lista = func.lectura_dic(params.param.dic)
-
-                clases.crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=params.param.dic)
+                clases.crear_obj(url_=params.param.url,timeout=timeout,lista=lista,dic=x)
+    
                 
 
         except TypeError:

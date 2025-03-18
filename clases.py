@@ -60,7 +60,6 @@ class Url():
             with ThreadPoolExecutor(max_workers=hilo) as ejec:
                 
                 for x in self.lista:
-                    
                     ejec.submit(func.masivo,x,self.html)
 
                         
@@ -84,16 +83,10 @@ class Url():
                 print(Fore.GREEN+'buscando rutas')
                 print(f'utilizando {hilo} hilos')
                 with ThreadPoolExecutor(max_workers=hilo) as ejec:
-                    for x in self.lista:
-                       
+                    for x in self.lista:                
                         ejec.submit(func.masivo,x,self.html)
                         
                         
-
-            else:
-                print(Fore.RED+'no se pudo procesar el diccionario correctamente')
-
-
 def crear_obj(url_,timeout,lista,dic):
     
     url = Url(url_or=url_,timeout=timeout,lista=lista,dic=dic)

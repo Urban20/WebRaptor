@@ -100,7 +100,9 @@ dic                             *diccionario en formato .txt que se utiliza para
 def lectura_dic(dicc):
     try:
         with open(f'diccionarios/{dicc}','r') as diccionario:
-            return str(diccionario.read()).split()
+            for linea in diccionario:
+                yield linea.strip()
+                
     except FileNotFoundError:
         print(Fore.RED+'diccionario no encontrado')
 
