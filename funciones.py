@@ -21,31 +21,32 @@ def cargar_json(json_arch):
     with open(json_arch) as a:
         return json.load(a)
 
-def mostrar_url(msg,url,test,num,obj_html):
-    if test.status_code == num and test.text != obj_html: 
+info_status = cargar_json('status.json')
+
+def mostrar_url(url,test,obj_html):
+    if test.status_code in [200,401,403,301,302,503,500] and test.text != obj_html: 
         
-        print(msg)
+        print(f' \033[0;37m{url} status >> \033[0;32m{test.status_code}\n\033[0;37m[+] {info_status.get(str(test.status_code))}')
         if params.param.guardar :
             with el.lock:   
                 el.encontrado.append(url)
                 guardar(params.param.dic)
 
-def rutas(x,url,time,head,obj_html):
+def mostrar_rutas(x,url,time,head,obj_html):
+    
     ruta = f'{url}{x}'
                 
     test= requests.get(ruta,timeout=time,headers=head)
 
-    mostrar_url(msg=Fore.WHITE+ruta,url=ruta,test=test,num=200,obj_html=obj_html)
+    mostrar_url(url=ruta,test=test,obj_html=obj_html)
         
-    mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{ruta}',url=ruta,test=test,num=401,obj_html=obj_html)
 
 def subdom_reemplazo(palabra,url,head,reemp,obj_html):
     url_exp = url.replace(palabra,reemp)
     test= requests.get(url_exp,headers=head)
     
-    mostrar_url(msg=Fore.WHITE+url_exp,url=url_exp,test=test,num=200,obj_html=obj_html)
+    mostrar_url(url=url_exp,test=test,obj_html=obj_html)
 
-    mostrar_url(msg=Fore.YELLOW+f'requiere autorizacion:{url_exp}',url=url_exp,test=test,num=401,obj_html=obj_html)
 
 def ayuda():
     print(Fore.CYAN+ r'''    
@@ -155,7 +156,7 @@ def masivo(x,html):
             #cuando no hay parametro -sd
             if not params.param.subdom:
 
-                rutas(x=x,url=params.param.url,time=2,head=el.data,obj_html=html)
+                mostrar_rutas(x=x,url=params.param.url,time=2,head=el.data,obj_html=html)
 
             #cuando si lo hay
             else:

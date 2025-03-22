@@ -2,4 +2,4 @@ diccionarios/
 *.txt
 fceia/
 __pycache__/
-dic.bat
+*.bat

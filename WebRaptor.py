@@ -1,3 +1,5 @@
+#! /usr/bin/env -S python3
+
 import funciones as func
 import params
 import elementos as el

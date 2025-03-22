@@ -83,6 +83,7 @@ class Url():
                 print(Fore.GREEN+'buscando rutas')
                 print(f'utilizando {hilo} hilos')
                 with ThreadPoolExecutor(max_workers=hilo) as ejec:
+
                     for x in self.lista:                
                         ejec.submit(func.masivo,x,self.html)
                         
