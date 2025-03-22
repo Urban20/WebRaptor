@@ -25,8 +25,13 @@ info_status = cargar_json('status.json')
 
 def mostrar_url(url,test,obj_html):
     if test.status_code in [200,401,403,301,302,503,500] and test.text != obj_html: 
+
+        if test.status_code == 200:
+            COLOR = '\033[0;32m'
+        else:
+            COLOR = '\033[0;33m'
         
-        print(f' \033[0;37m{url} status >> \033[0;32m{test.status_code}\n\033[0;37m[+] {info_status.get(str(test.status_code))}')
+        print(f'\n \033[0;37m{url} status >> {COLOR}{test.status_code}\n\033[4;37m[+] {info_status.get(str(test.status_code))}\033[0m\n')
         if params.param.guardar :
             with el.lock:   
                 el.encontrado.append(url)
