@@ -14,9 +14,10 @@ import signal
 
 try:
 
+    if not params.param.ayuda:
+        print(el.logo)
 
-    print(el.logo)
-
+    #no funciona del todo bien, revisar
     signal.signal(signalnum=signal.SIGINT,handler=func.salir)
 
     if params.param.timeout != None:
