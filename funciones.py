@@ -5,6 +5,7 @@ import requests
 import params
 import funciones as func
 import json
+import re
 
 
 init()
@@ -166,8 +167,7 @@ def masivo(x,html):
             #cuando si lo hay
             else:
                 
-                
-                palabra = params.param.url.split('//')[-1].split('.')[0]
+                palabra = re.search(r'https?://(\w+)\.',params.param.url).group(1) # palabra de la url que se reemplaza
                 
                 subdom_reemplazo(palabra=palabra,url=params.param.url,head=el.data,reemp=x,obj_html=html)
 
