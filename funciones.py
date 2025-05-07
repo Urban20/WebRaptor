@@ -102,7 +102,7 @@ dic                             *diccionario en formato .txt que se utiliza para
 ''')
     print('''
 #########################################################################################################''')
-    print(Fore.MAGENTA+el.titulo)
+
 
 def lectura_dic(dicc):
     try:
