@@ -6,6 +6,7 @@
   <img alt="Static Badge" src="https://img.shields.io/badge/compatible_con-Linux-green?style=flat-square&">
 </p>
 
+[![logo.png](https://i.postimg.cc/R0Fw9cP8/logo.png)](https://postimg.cc/xXwX3bVy)
 
 ## Utilidad de la herramienta
 
