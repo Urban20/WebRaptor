@@ -12,6 +12,8 @@
 
 Consiste en hacer peticiones utilizando la url de un sitio web y añadirle palabras inesperadas con la intencion de encontrar directorios ocultos que no deberian estar publicos, esto se lleva a cabo otorgandole a la herramienta un diccionario de palabras clave en formato ".txt".
 
+`-h o --ayuda` para ver todos los parametros disponibles
+
 Ademas se puede hacer una busqueda de subdominios cuyo objetivo es similar.
 
 Esta funcion se habilita con el parametro `-sd` (boleano)
@@ -20,4 +22,4 @@ Esta funcion se habilita con el parametro `-sd` (boleano)
 si se esta en windows, ejecutando `pip install -r requirements.txt` se pueden instalar las dependencias automaticamente
 
 ## demostración:
-[![image.png](https://i.postimg.cc/NMZNnhf5/image.png)](https://postimg.cc/WF66DHZv)
+[![demo-wr.png](https://i.postimg.cc/v87xmnh0/demo-wr.png)](https://postimg.cc/nMzhRC6m)
