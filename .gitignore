@@ -3,3 +3,4 @@ diccionarios/
 fceia/
 __pycache__/
 *.bat
+!requirements.txt

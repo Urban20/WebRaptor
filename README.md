@@ -8,6 +8,9 @@
 
 [![logo.png](https://i.postimg.cc/R0Fw9cP8/logo.png)](https://postimg.cc/xXwX3bVy)
 
+Importante:
+antes de ejecutar la herramienta se debe abrir un terminal en el directorio y ejecutar el comando: pip install -r requirements.txt esto instala todas las librerias necesarias para la ejecucion del codigo
+
 ## Utilidad de la herramienta
 
 Consiste en hacer peticiones utilizando la url de un sitio web y añadirle palabras inesperadas con la intencion de encontrar directorios ocultos que no deberian estar publicos, esto se lleva a cabo otorgandole a la herramienta un diccionario de palabras clave en formato ".txt".
