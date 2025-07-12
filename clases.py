@@ -5,6 +5,7 @@ import elementos as el
 import funciones as func
 import params
 from concurrent.futures import ThreadPoolExecutor
+import sys
 
 
 
@@ -39,10 +40,10 @@ class Url():
             
         except TimeoutError:
              print(Fore.RED+'tiempo de espera agotado')
-             exit(1)
+             sys.exit(1)
         except Exception as e:
             print(Fore.RED+f'error: {e}')
-            exit(1)
+            sys.exit(1)
 
     def obtener_html(self):
         if self.validado:

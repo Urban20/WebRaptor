@@ -6,11 +6,14 @@ import elementos as el
 import clases
 from colorama import Fore
 import signal
-
+import sys
+from os import devnull
 
 # autor : Urban
 # aclaracion importante: el codigo esta un poco desorganizado con variables que pueden ser confusas, codigo redundante , tambien puede haber metodos y funciones que se llaman igual
 # el codigo es algo viejo, pero funciona y se intenta pulir y mejorar en la medida de lo posible
+
+sys.stderr = open(devnull,'w')
 
 try:
 
@@ -46,4 +49,4 @@ try:
 except KeyboardInterrupt:
     print(Fore.RED+'interrumpiendo script')
     func.detenido = True
-    exit(0)
+    sys.exit(0)

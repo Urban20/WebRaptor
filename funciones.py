@@ -6,6 +6,7 @@ import params
 import funciones as func
 import json
 import re
+import sys
 
 
 init()
@@ -16,7 +17,7 @@ def salir(señal,frame):
     global detenido
     print(Fore.WHITE+'\n[+] saliendo...\n')
     detenido = True
-    exit(0)
+    sys.exit(0)
 
 def cargar_json(json_arch):
     with open(json_arch) as a:
@@ -174,6 +175,6 @@ def masivo(x,html):
         except:
             pass
     else:
-        exit()
+        sys.exit()
         
 

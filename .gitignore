@@ -4,3 +4,4 @@ fceia/
 __pycache__/
 *.bat
 !requirements.txt
+WebRaptor.dist/
