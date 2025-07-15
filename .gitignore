@@ -1,7 +1,5 @@
-diccionarios/
-*.txt
-fceia/
 __pycache__/
 *.bat
 !requirements.txt
-WebRaptor.dist/
+WebRaptor/
+env/
